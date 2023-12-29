@@ -1,14 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Sockets;
 using TicketsBackend.DTOs;
 using TicketsBackend.Models;
+using static TicketsBackend.Startup;
 
 namespace TicketsBackend.Controllers
 {
     [Route("api/[controller]")] // /api/Tickets
     [ApiController]
+    [Authorize]
     public class TicketsController : ControllerBase
     {
+        private readonly TestDbContext context;
+
+        public TicketsController(TestDbContext context)
+        {
+            this.context = context;
+        }
+
         // GET: api/Tickets
         [HttpGet]
         public IEnumerable<string> Get()
