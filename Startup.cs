@@ -19,26 +19,39 @@ namespace TicketsBackend
             options.UseInMemoryDatabase("InMemoryDatabase"));
 
             // JWT Authentication
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.Authority = "https://login.microsoftonline.com/c6d685ee-a0cf-40c4-a046-2c64cbeded7b/v2.0"; 
+                options.Audience = "f61d1422-3444-4400-b12e-9735ea437f5c";
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    options.Authority = "https://login.microsoftonline.com/Your_Tenant_Id";
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = "https://sts.windows.net/c6d685ee-a0cf-40c4-a046-2c64cbeded7b/",
-                        ValidateAudience = true,
-                        ValidAudience = "f61d1422-3444-4400-b12e-9735ea437f5c",
-                        ValidateLifetime = true
-                    };
-                });
+                    ValidateIssuer = true,
+                    ValidIssuer = $"https://sts.windows.net/c6d685ee-a0cf-40c4-a046-2c64cbeded7b/",
+                    ValidateAudience = true,
+                    ValidAudience = "f61d1422-3444-4400-b12e-9735ea437f5c", 
+                    ValidateLifetime = true
+                };
+            });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                    .WithOrigins("http://localhost:3000") // URL of the React development server
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // ... existing configuration ...
-
             // Use authentication
             app.UseAuthentication();
+            app.UseCors("CorsPolicy");
 
             // ... other middleware ...
         }
