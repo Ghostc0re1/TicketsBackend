@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net.Sockets;
 using TicketsBackend.DTOs;
-
+using TicketsBackend.Models;
 
 namespace TicketsBackend.Controllers
 {
@@ -34,7 +34,12 @@ namespace TicketsBackend.Controllers
 
             var ticket = new Ticket
             {
-                // Map properties from DTO to Ticket model
+                // Map properties from TicketsDto to Ticket
+                Subject = ticketsDto.Subject,
+                Description = ticketsDto.Description,
+                Priority = ticketsDto.Priority,
+                Status = ticketsDto.Status,
+                DepartmentId = ticketsDto.DepartmentId, // Ensure this matches the DTO
             };
 
             context.Tickets.Add(ticket);

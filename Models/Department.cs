@@ -1,4 +1,5 @@
-﻿namespace TicketsBackend.Models
+﻿#nullable enable
+namespace TicketsBackend.Models
 {
     public class Department
     {

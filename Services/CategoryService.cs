@@ -5,13 +5,11 @@ namespace TicketsBackend.Services
     public class CategoryService
     {
         public Dictionary<int, List<Category>> DepartmentCategories { get; set; }
-        public Dictionary<Category, List<SubCategory>> CategorySubCategories { get; set; }
 
         public CategoryService(IEnumerable<Department> departments)
         {
             // Initialize the dictionaries
             DepartmentCategories = new Dictionary<int, List<Category>>();
-            CategorySubCategories = new Dictionary<Category, List<SubCategory>>();
 
             // Populate the DepartmentCategories dictionary
             foreach (var department in departments)
